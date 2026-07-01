@@ -49,7 +49,7 @@ jobs:
         run: dotnet restore "UI/WPR.UI.Android/WPR.UI.Android.csproj" -p:CheckEolWorkloads=false
 
       - name: Build WPR.UI.Android (Release)
-        run: dotnet build "UI/WPR.UI.Android/WPR.UI.Android.csproj" -c Release -f net6.0-android --no-restore -p:CheckEolWorkloads=false
+        run: dotnet build "UI/WPR.UI.Android/WPR.UI.Android.csproj" -c Release -f net6.0-android31.0 --no-restore -p:CheckEolWorkloads=false
 
       - name: Find built APKs
         shell: pwsh
@@ -71,4 +71,3 @@ jobs:
           name: WPR.UI.Android-${{ env.SHORT_SHA }}
           path: UI/WPR.UI.Android/bin/Release/**/*.apk
           if-no-files-found: error
-          
