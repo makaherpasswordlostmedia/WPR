@@ -28,36 +28,30 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Pin global.json to .NET 8 SDK
+      # Must run BEFORE any dotnet workload/restore/build command,
+      # otherwise the default (newer) SDK on the runner picks up the
+      # android workload and marks net6.0-android as unsupported (NETSDK1202).
+      - name: Pin repo to the installed .NET 8 SDK
         shell: pwsh
         run: |
           dotnet --list-sdks
-          $sdk = (dotnet --list-sdks | Select-String '^8\.' | Select-Object -First 1) -replace '^(\S+).*', '$1'
+          $sdk = (dotnet --list-sdks | Select-String '^8\.' | Select-Object -First 1).ToString().Split(' ')[0]
           if (-not $sdk) { throw "No .NET 8 SDK found on this runner" }
+          Write-Host "Pinning to SDK $sdk"
           @{ sdk = @{ version = $sdk; rollForward = "latestFeature" } } | ConvertTo-Json | Set-Content -Path "global.json"
           Get-Content global.json
+          dotnet --version
 
       - name: Install .NET Android workload
         run: dotnet workload install android --skip-manifest-update
 
-      - name: Restore WPR.UI.Android (with retry)
-        shell: pwsh
-        run: |
-          $maxAttempts = 5
-          for ($i = 1; $i -le $maxAttempts; $i++) {
-            Write-Host "Restore attempt $i of $maxAttempts"
-            dotnet restore "UI/WPR.UI.Android/WPR.UI.Android.csproj" --disable-parallel
-            if ($LASTEXITCODE -eq 0) { break }
-            if ($i -eq $maxAttempts) { throw "dotnet restore failed after $maxAttempts attempts" }
-            Write-Host "Restore failed, retrying in 20s..."
-            Start-Sleep -Seconds 20
-          }
+      - name: Restore WPR.UI.Android
+        run: dotnet restore "UI/WPR.UI.Android/WPR.UI.Android.csproj"
 
       - name: Build WPR.UI.Android (Release)
         run: dotnet build "UI/WPR.UI.Android/WPR.UI.Android.csproj" -c Release -f net6.0-android --no-restore
 
       - name: Find built APKs
-        id: find_apk
         shell: pwsh
         run: |
           $apks = Get-ChildItem -Path "UI/WPR.UI.Android/bin/Release" -Recurse -Include *.apk
