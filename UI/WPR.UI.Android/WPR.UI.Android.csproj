@@ -3,7 +3,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-android</TargetFramework>
     <AvaloniaVersion>11.0.11</AvaloniaVersion>
-    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>31</SupportedOSPlatformVersion>
+    <CheckEolWorkloads>false</CheckEolWorkloads>
     <Nullable>enable</Nullable>
     <ApplicationId>com.8212369.WPR</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
