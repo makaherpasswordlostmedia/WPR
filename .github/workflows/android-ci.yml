@@ -38,7 +38,7 @@ jobs:
       - name: Restore
         run: |
           dotnet restore "$PROJECT" \
-            -f "$FRAMEWORK" \
+            -p:TargetFramework="$FRAMEWORK" \
             -p:SolutionDir="$SOLUTION_DIR/"
 
       - name: Build (Debug APK)
