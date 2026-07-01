@@ -36,7 +36,10 @@ jobs:
         run: dotnet workload install android
 
       - name: Restore
-        run: dotnet restore "$PROJECT" -p:SolutionDir="$SOLUTION_DIR/"
+        run: |
+          dotnet restore "$PROJECT" \
+            -f "$FRAMEWORK" \
+            -p:SolutionDir="$SOLUTION_DIR/"
 
       - name: Build (Debug APK)
         run: |
