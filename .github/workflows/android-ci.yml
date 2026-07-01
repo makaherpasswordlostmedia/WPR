@@ -1,6 +1,6 @@
 
 
-name: Android CI wrp
+name: Android CI WPR
 
 on:
   workflow_dispatch:
