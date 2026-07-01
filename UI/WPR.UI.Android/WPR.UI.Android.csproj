@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-android</TargetFramework>
-    <AvaloniaVersion>11.0.999-cibuild0023504-beta</AvaloniaVersion>
+    <AvaloniaVersion>11.0.11</AvaloniaVersion>
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ApplicationId>com.8212369.WPR</ApplicationId>
