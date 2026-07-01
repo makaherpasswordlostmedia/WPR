@@ -46,10 +46,10 @@ jobs:
         run: dotnet workload install android --skip-manifest-update
 
       - name: Restore WPR.UI.Android
-        run: dotnet restore "UI/WPR.UI.Android/WPR.UI.Android.csproj"
+        run: dotnet restore "UI/WPR.UI.Android/WPR.UI.Android.csproj" -p:CheckEolWorkloads=false
 
       - name: Build WPR.UI.Android (Release)
-        run: dotnet build "UI/WPR.UI.Android/WPR.UI.Android.csproj" -c Release -f net6.0-android --no-restore
+        run: dotnet build "UI/WPR.UI.Android/WPR.UI.Android.csproj" -c Release -f net6.0-android --no-restore -p:CheckEolWorkloads=false
 
       - name: Find built APKs
         shell: pwsh
@@ -71,3 +71,4 @@ jobs:
           name: WPR.UI.Android-${{ env.SHORT_SHA }}
           path: UI/WPR.UI.Android/bin/Release/**/*.apk
           if-no-files-found: error
+          
