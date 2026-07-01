@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Nullable>enable</Nullable>
-	<AvaloniaVersion>11.0.999-cibuild0023504-beta</AvaloniaVersion>
+	<AvaloniaVersion>11.0.11</AvaloniaVersion>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
