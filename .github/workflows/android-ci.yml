@@ -1,48 +1,69 @@
-
-
 name: Android CI WPR
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
+    env:
+      SOLUTION_DIR: ${{ github.workspace }}/Src
+      PROJECT: ${{ github.workspace }}/Src/UI/WPR.UI.Android/WPR.UI.Android.csproj
+      FRAMEWORK: net8.0-android34.0
+
     steps:
-    - name: Clone repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: Attach release in action
-      uses: actions/upload-artifact@v4
-      with:
-       name: wrp apk
-       path: ./app/build/outputs/apk/debug/app-debug.apk
+      - name: Install .NET Android workload
+        run: dotnet workload install android
 
-    - name: "Get Short SHA"
-      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Restore
+        run: dotnet restore "$PROJECT" -p:SolutionDir="$SOLUTION_DIR/"
 
-    - name: "Get Version"
-      run: echo "VERSION=$(echo $(cat app/build.gradle.kts | grep versionName | cut -d "=" -f 2 | sed "s/\"//g"))" >> $GITHUB_ENV
+      - name: Build (Debug APK)
+        run: |
+          dotnet build "$PROJECT" \
+            -c Debug \
+            -f "$FRAMEWORK" \
+            -p:SolutionDir="$SOLUTION_DIR/" \
+            -p:EmbedAssembliesIntoApk=true \
+            -p:AndroidEnableAssemblyCompression=false
 
-    - name: "List files"
-      run: |
-        ls -la app/src/main/assets
+      - name: Locate built APK
+        id: find_apk
+        run: |
+          APK_PATH=$(find Src/UI/WPR.UI.Android/bin -iname "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "No APK found!"
+            find Src/UI/WPR.UI.Android/bin -maxdepth 6
+            exit 1
+          fi
+          echo "apk_path=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "Found APK at: $APK_PATH"
 
+      - name: Get short SHA
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
-    
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wpr-android-${{ env.SHORT_SHA }}
+          path: ${{ steps.find_apk.outputs.apk_path }}
