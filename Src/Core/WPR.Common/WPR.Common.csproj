@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
     <CheckEolWorkloads>false</CheckEolWorkloads>
-    <TargetFrameworks>net8.0;net8.0-android</TargetFrameworks>
+    <TargetFrameworks>net8.0;net8.0-android34.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
     <CheckEolWorkloads>false</CheckEolWorkloads>
-   <TargetFrameworks>net8.0-windows10.0.17763.0;net8.0-android</TargetFrameworks>
+   <TargetFrameworks>net8.0-windows10.0.17763.0;net8.0-android34.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <CheckEolWorkloads>false</CheckEolWorkloads>
-    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android'">26</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android34.0'">26</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Condition="'$(TargetFramework)' == 'net8.0-android'" Include="$(SolutionDir)\ThirdParty\DesktopNotifications\DesktopNotifications.Android\DesktopNotifications.Android.csproj" />
+	<ProjectReference Condition="'$(TargetFramework)' == 'net8.0-android34.0'" Include="$(SolutionDir)\ThirdParty\DesktopNotifications\DesktopNotifications.Android\DesktopNotifications.Android.csproj" />
     <ProjectReference Include="$(SolutionDir)\ThirdParty\DesktopNotifications\DesktopNotifications.Windows\DesktopNotifications.Windows.csproj" />
     <ProjectReference Include="$(SolutionDir)\ThirdParty\DesktopNotifications\DesktopNotifications\DesktopNotifications.csproj" />
   </ItemGroup>
