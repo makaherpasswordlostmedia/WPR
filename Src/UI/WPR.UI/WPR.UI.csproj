@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-	<TargetFrameworks>net8.0;net8.0-android</TargetFrameworks>
+	<TargetFrameworks>net8.0;net8.0-android34.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-	<TargetFrameworks>net8.0-windows10.0.17763.0;net8.0-android</TargetFrameworks>
+	<TargetFrameworks>net8.0-windows10.0.17763.0;net8.0-android34.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <AvaloniaVersion>11.3.9</AvaloniaVersion>
     <EFVersion Condition="'$(TargetFramework)' == 'net8.0-windows10.0.17763.0'">5.0.17</EFVersion>
     <EFVersion Condition="'$(TargetFramework)' != 'net8.0-windows10.0.17763.0'">6.0.8</EFVersion>
-    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android'">26</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android34.0'">26</SupportedOSPlatformVersion>
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <TrimMode>copyused</TrimMode>
